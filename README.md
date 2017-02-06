@@ -2,7 +2,7 @@
 
 ### Dependencies
 
-[get_next_line](https://www.github.com/helloitsian/get_nex_line)
+[get_next_line](https://www.github.com/helloitsian/get_next_line)
 
 [libft](https://www.github.com/helloitsian/libft)
 
