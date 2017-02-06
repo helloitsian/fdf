@@ -58,7 +58,7 @@ static void make_point_array(char **data) {
     }
     i++;
   }
-  /* 
+/*
   i = 0;
   j = 0;
   while (i < y)
@@ -71,7 +71,7 @@ static void make_point_array(char **data) {
     }
     i++;
   }
-  */
+*/
   init_draw(points, x, y);
 }
 

@@ -7,12 +7,13 @@
 # include <math.h>
 
 # include <stdio.h>
-
+/*
 typedef struct s_2D
 {
    float x;
    float y;
 } t_2D;
+*/
 
 typedef struct s_3D
 {
