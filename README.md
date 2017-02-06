@@ -6,11 +6,13 @@
 
 [libft](https://www.github.com/helloitsian/libft)
 
-minilibx (El Capitan) found on intra project page for fdf.
+### Steps
 
-make sure libft.a/libft.h are both in root directory
+1. minilibx (El Capitan) found on intra project page for fdf.
+
+2. make sure libft.a/libft.h are both in root directory
  (run make in libft folder, copy to root)
 
-run make in root directory
+3. run make in root directory
 
-run "./a.out MAP_HERE"
+4. run "./a.out MAP_HERE"
