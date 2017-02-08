@@ -6,14 +6,11 @@
 # include "libft.h"
 # include <math.h>
 
-# include <stdio.h>
-/*
-typedef struct s_2D
+typdef struct s_mlxwin
 {
-   float x;
-   float y;
-} t_2D;
-*/
+	void *mlx;
+	void *win;
+} t_mlxwin;
 
 typedef struct s_3D
 {
@@ -22,8 +19,8 @@ typedef struct s_3D
    float z;
 } t_3D;
 
-void	rotate_point(t_3D *point);
-void  	draw_line(float x1, float x2, float y1, float y2, void *mlx, void *win);
+void	isometric(t_3D **points, int x, int y);
+void  	draw_line(int x1, int x2, int y1, int y2, void *mlx, void *win);
 void	init_draw(t_3D **points, int x, int y);
 
 #endif
