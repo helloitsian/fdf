@@ -6,13 +6,13 @@
 /*   By: imurawsk <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/24 17:16:01 by imurawsk          #+#    #+#             */
-/*   Updated: 2017/02/08 02:22:57 by imurawsk         ###   ########.fr       */
+/*   Updated: 2017/02/08 16:17:07 by imurawsk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-static void		rotate_z(t_3D *point, float angle)
+static void		rotate_z(t_3d *point, float angle)
 {
 	float temp;
 
@@ -21,7 +21,7 @@ static void		rotate_z(t_3D *point, float angle)
 	point->y = (temp * -sin(angle)) + (point->y * cos(angle));
 }
 
-static void		rotate_x(t_3D *point, float angle)
+static void		rotate_x(t_3d *point, float angle)
 {
 	float temp;
 
@@ -30,7 +30,7 @@ static void		rotate_x(t_3D *point, float angle)
 	point->z = (temp * -sin(angle)) + (point->z * cos(angle));
 }
 
-static void		rotate_point(t_3D *point, float angle, char axis)
+static void		rotate_point(t_3d *point, float angle, char axis)
 {
 	if (axis == 'x')
 		rotate_x(point, angle);
@@ -38,7 +38,7 @@ static void		rotate_point(t_3D *point, float angle, char axis)
 		rotate_z(point, angle);
 }
 
-void			isometric(t_3D **points, int x, int y)
+void			isometric(t_3d **points, int x, int y)
 {
 	int i;
 	int j;
@@ -47,7 +47,7 @@ void			isometric(t_3D **points, int x, int y)
 	i = 0;
 	j = 0;
 	scale = x > y ? (500 / (x - 1)) : (500 / (y - 1));
-	while(i < y)
+	while (i < y)
 	{
 		j = 0;
 		while (j < x)

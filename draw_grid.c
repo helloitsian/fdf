@@ -6,47 +6,77 @@
 /*   By: imurawsk <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/07 16:30:48 by imurawsk          #+#    #+#             */
-/*   Updated: 2017/02/08 02:21:38 by imurawsk         ###   ########.fr       */
+/*   Updated: 2017/02/08 19:44:34 by imurawsk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
-#include <unistd.h>
 
-static void		draw_map(t_3D **points, int x, int y, void *mlx, void *win)
+static int		key_read(int keycode)
 {
-	t_3D *c;
-	int i;
-	int j;
-
-	i = 0;
-	j = 0;
-	isometric(points, x, y);
-	while (i < y)
-	{
-		j = 0;
-		while (j < x)
-		{
-			c = &points[i][j];
-			if (j < x - 1 && points[i][j + 1].x && points[i][j + 1].y)
-				draw_line(c->x, points[i][j + 1].x, 
-				c->y, points[i][j + 1].y, mlx, win);
-			if (i < y - 1 && points[i + 1][j].x && points[i + 1][j].y)
-				draw_line(c->x, points[i + 1][j].x, 
-				c->y, points[i + 1][j].y, mlx, win);
-			j++;
-		}
-		i++;
-	}
+	
+	if (keycode == 53)
+		exit(0);
+	return (0);
 }
 
-void		init_draw(t_3D **points, int x, int y)
+static void		draw_right(t_3d **points, t_mlxwin *mw, t_dl *dl, t_3d *c)
 {
-	void *mlx;
-	void *win;
+	dl->x1 = c->x;
+	dl->x2 = points[dl->i][dl->j + 1].x;
+	dl->y1 = c->y;
+	dl->y2 = points[dl->i][dl->j + 1].y;
+	dl->dx = abs(dl->x2 - dl->x1);
+	dl->dy = abs(dl->y2 - dl->y1);
+	draw_line(dl, mw);
+}
 
-	mlx = mlx_init();
-	win = mlx_new_window(mlx, 1000, 1000, "draw grid");
-	draw_map(points, x, y, mlx, win);
-	mlx_loop(mlx);
+static void		draw_down(t_3d **points, t_mlxwin *mw, t_dl *dl, t_3d *c)
+{
+	dl->x1 = c->x;
+	dl->x2 = points[dl->i + 1][dl->j].x;
+	dl->y1 = c->y;
+	dl->y2 = points[dl->i + 1][dl->j].y;
+	dl->dx = abs(dl->x2 - dl->x1);
+	dl->dy = abs(dl->y2 - dl->y1);
+	draw_line(dl, mw);
+}
+
+static void		draw_map(t_3d **points, int x, int y, t_mlxwin *mw)
+{
+	t_3d		*c;
+	t_dl		*dl;
+
+	dl = (t_dl *)malloc(sizeof(t_dl));
+	dl->i = 0;
+	dl->j = 0;
+	isometric(points, x, y);
+	while (dl->i < y)
+	{
+		dl->j = 0;
+		while (dl->j < x)
+		{
+			c = &points[dl->i][dl->j];
+			if (dl->j < x - 1 && points[dl->i][dl->j + 1].x
+					&& points[dl->i][dl->j + 1].y)
+				draw_right(points, mw, dl, c);
+			if (dl->i < y - 1 && points[dl->i + 1][dl->j].x
+					&& points[dl->i + 1][dl->j].y)
+				draw_down(points, mw, dl, c);
+			dl->j++;
+		}
+		dl->i++;
+	}
+	mlx_key_hook(mw->win, key_read, 0);
+}
+
+void			init_draw(t_3d **points, int x, int y)
+{
+	t_mlxwin *mw;
+
+	mw = (t_mlxwin *)malloc(sizeof(t_mlxwin));
+	mw->mlx = mlx_init();
+	mw->win = mlx_new_window(mw->mlx, 1000, 1000, "draw grid");
+	draw_map(points, x, y, mw);
+	mlx_loop(mw->mlx);
 }

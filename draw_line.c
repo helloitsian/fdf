@@ -6,41 +6,32 @@
 /*   By: imurawsk <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/08 02:04:31 by imurawsk          #+#    #+#             */
-/*   Updated: 2017/02/08 02:08:21 by imurawsk         ###   ########.fr       */
+/*   Updated: 2017/02/08 16:01:04 by imurawsk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void	draw_line(int x1, int x2, int y1, int y2, void *mlx, void *win)
+void	draw_line(t_dl *dl, t_mlxwin *mw)
 {
-	int		dx;
-	int		dy;
-	float	sx;
-	float	sy;
-	float	err;
-	float	e2;
-
-	dx = abs(x2 - x1);
-	dy = abs(y2 - y1);
-	err = (dx > dy ? dx : -dy) / 2;
-	sx = x1 < x2 ? 1 : -1;
-	sy = y1 < y2 ? 1 : -1;
+	dl->err = (dl->dx > dl->dy ? dl->dx : -dl->dy) / 2;
+	dl->sx = dl->x1 < dl->x2 ? 1 : -1;
+	dl->sy = dl->y1 < dl->y2 ? 1 : -1;
 	while (1)
 	{
-		mlx_pixel_put(mlx, win, x1, y1, 0x00FFFFFF);
-		if (x1 == x2 && y1 == y2)
+		mlx_pixel_put(mw->mlx, mw->win, dl->x1, dl->y1, 0x00FFFFFF);
+		if (dl->x1 == dl->x2 && dl->y1 == dl->y2)
 			break ;
-		e2 = err;
-		if (e2 > -dx)
+		dl->e2 = dl->err;
+		if (dl->e2 > -dl->dx)
 		{
-			err -= dy;
-			x1 += sx;
+			dl->err -= dl->dy;
+			dl->x1 += dl->sx;
 		}
-		if (e2 < dy)
+		if (dl->e2 < dl->dy)
 		{
-			err += dx;
-			y1 += sy;
+			dl->err += dl->dx;
+			dl->y1 += dl->sy;
 		}
 	}
 }

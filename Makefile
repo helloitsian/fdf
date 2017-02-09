@@ -1,25 +1,39 @@
 NAME = fdf
+PATH_INC = ./libft/
 
-SRCS = parse_input.c \
-	   rotate_points.c \
-	   draw_grid.c \
-	   draw_line.c \
+CC = gcc
+CFLAGS = -Wall -Wextra -Werror
 
-MLX = ./minilibx_macos/
+HEAD = fdf.h
 
-MLXFLAGS = -framework OpenGL -framework AppKit
+GNL = get_next_line/get_next_line.c
+SRC =	parse_input.c \
+		draw_grid.c \
+		draw_line.c \
+		rotate_points.c \
 
-GNL = ./get_next_line/get_next_line.c
+OBJ =	$(SRCS:.c=.o)
+
 
 all: $(NAME)
 
-$(NAME):
-		gcc $(SRCS) $(GNL) -L. -lft -I  $(MLX) -L $(MLX) -lmlx $(MLXFLAGS)
+$(OBJ): $(SRC)
+		$(CC) -c $(CFLAGS) $(SRC)
+
+$(LIBS):
+		$(MAKE) -C ./libft
+
+$(NAME): $(OBJ) $(LIBS)
+		$(MAKE) -C libft/
+		$(MAKE) -C minilibx_macos/
+		$(CC) -o $(NAME) $(SRC) $(GNL) -L./libft/ -lft -L./minilibx_macos/ -lmlx -framework OpenGL -framework AppKit
 
 clean:
-	rm -f $(NAME)
+		$(MAKE) -C libft/ clean
+		rm -f $(OBJ)
 
 fclean: clean
+		$(MAKE) -C libft/ fclean
 		rm -f $(NAME)
-re:
-	fclean all
+
+re:	fclean all

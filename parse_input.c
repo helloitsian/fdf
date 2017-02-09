@@ -6,21 +6,21 @@
 /*   By: imurawsk <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/08 01:55:35 by imurawsk          #+#    #+#             */
-/*   Updated: 2017/02/08 01:59:31 by imurawsk         ###   ########.fr       */
+/*   Updated: 2017/02/08 20:05:09 by imurawsk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-static t_3D		**create_points_array(t_3D **points, int x, int y)
+static t_3d		**create_points_array(t_3d **points, int x, int y)
 {
 	int i;
 
 	i = 0;
-	points = (t_3D **)malloc(sizeof(t_3D *) * y);
+	points = (t_3d **)malloc(sizeof(t_3d *) * y);
 	while (i < y)
 	{
-		points[i] = (t_3D *)malloc(sizeof(t_3D) * x);
+		points[i] = (t_3d *)malloc(sizeof(t_3d) * x);
 		i++;
 	}
 	return (points);
@@ -46,11 +46,12 @@ static int		words(char const *s, char c)
 
 static void		make_point_array(char **data, int x, int y)
 {
-	t_3D		**points;
+	t_3d		**points;
 	int			i;
 	int			j;
 	int			t_x;
 
+	points = NULL;
 	points = create_points_array(points, x, y);
 	i = 0;
 	j = 0;
@@ -73,29 +74,29 @@ static void		make_point_array(char **data, int x, int y)
 
 int				main(int argc, char **argv)
 {
-	char		*line;
-	char		*contents;
+	t_parse		*p;
 	char		**data;
-	char		*temp;
-	int			ret;
-	int			fd;
-	int			x;
-	int			y;
 
-	x = -1;
-	y = 0;
-	fd = open(argv[1], O_RDONLY);
-	contents = ft_strnew(0);
-	while ((ret = get_next_line(fd, &line)))
+	if (argc != 2)
+		exit(0);
+	p = (t_parse *)malloc(sizeof(t_parse));
+	p->x = -1;
+	p->y = 0;
+	p->fd = open(argv[1], O_RDONLY);
+	p->contents = ft_strnew(0);
+	while ((p->ret = get_next_line(p->fd, &p->line)))
 	{
-		temp = contents;
-		contents = ft_strjoin(contents, line);
-		contents = ft_strjoin(contents, " ");
-		if (x == -1)
-			x = words(line, ' ');
-		free(temp);
-		y++;
+		p->temp = p->contents;
+		p->contents = ft_strjoin(p->contents, p->line);
+		free(p->temp);
+		p->temp = p->contents;
+		p->contents = ft_strjoin(p->contents, " ");
+		if (p->x == -1)
+			p->x = words(p->line, ' ');
+		free(p->temp);
+		p->y++;
 	}
-	data = ft_strsplit(contents, ' ');
-	make_point_array(data, x, y);
+	data = ft_strsplit(p->contents, ' ');
+	make_point_array(data, p->x, p->y);
+	return (0);
 }
