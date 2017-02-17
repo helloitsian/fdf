@@ -6,7 +6,7 @@
 /*   By: imurawsk <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/07 16:30:48 by imurawsk          #+#    #+#             */
-/*   Updated: 2017/02/08 19:44:34 by imurawsk         ###   ########.fr       */
+/*   Updated: 2017/02/09 22:23:32 by imurawsk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 static int		key_read(int keycode)
 {
-	
 	if (keycode == 53)
 		exit(0);
 	return (0);

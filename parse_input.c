@@ -6,7 +6,7 @@
 /*   By: imurawsk <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/08 01:55:35 by imurawsk          #+#    #+#             */
-/*   Updated: 2017/02/08 20:05:09 by imurawsk         ###   ########.fr       */
+/*   Updated: 2017/02/16 17:01:23 by imurawsk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,29 +74,29 @@ static void		make_point_array(char **data, int x, int y)
 
 int				main(int argc, char **argv)
 {
-	t_parse		*p;
+	t_parse		p;
 	char		**data;
 
 	if (argc != 2)
 		exit(0);
-	p = (t_parse *)malloc(sizeof(t_parse));
-	p->x = -1;
-	p->y = 0;
-	p->fd = open(argv[1], O_RDONLY);
-	p->contents = ft_strnew(0);
-	while ((p->ret = get_next_line(p->fd, &p->line)))
+	p.x = -1;
+	p.y = 0;
+	if ((p.fd = open(argv[1], O_RDONLY)) <= 0)
+		return (0);
+	p.contents = ft_strnew(0);
+	while ((p.ret = get_next_line(p.fd, &p.line)))
 	{
-		p->temp = p->contents;
-		p->contents = ft_strjoin(p->contents, p->line);
-		free(p->temp);
-		p->temp = p->contents;
-		p->contents = ft_strjoin(p->contents, " ");
-		if (p->x == -1)
-			p->x = words(p->line, ' ');
-		free(p->temp);
-		p->y++;
+		p.temp = p.contents;
+		p.contents = ft_strjoin(p.contents, p.line);
+		free(p.temp);
+		p.temp = p.contents;
+		p.contents = ft_strjoin(p.contents, " ");
+		if (p.x == -1)
+			p.x = words(p.line, ' ');
+		free(p.temp);
+		p.y++;
 	}
-	data = ft_strsplit(p->contents, ' ');
-	make_point_array(data, p->x, p->y);
+	data = ft_strsplit(p.contents, ' ');
+	make_point_array(data, p.x, p.y);
 	return (0);
 }
